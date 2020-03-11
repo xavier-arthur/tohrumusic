@@ -16,4 +16,8 @@ cd "$HOME"
 
 cp -r "$ORDIR" "$HOME/.tohru"
 
+cd "$HOME/.tohru"
+
+chmod +x tohru.sh
+
 echo ". . . DONE!"
