@@ -20,4 +20,4 @@ cd "$HOME/.tohru"
 
 chmod +x tohru.sh
 
-echo ". . . DONE!"
+rm -rf "$ORDIR"
