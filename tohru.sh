@@ -36,7 +36,7 @@ do
             cd "$DIRNAM"
     fi
 
-    if [[ "CHOICE" == "y" ]]; then
+    if [[ "$CHOICE" == "y" ]]; then
         youtube-dl -i -x --audio-format mp3 --embed-thumbnail -o \
         '%(playlist_index)s-%(title)s.%(ext)s' \
         $LINK >> /dev/null & PID=$!
