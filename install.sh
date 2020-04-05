@@ -12,12 +12,9 @@ Icon=$HOME/.tohru/icon.png
 Terminal=true
 EOF
 
-cd "$HOME"
-
 cp -r "$ORDIR" "$HOME/.tohru"
-
-cd "$HOME/.tohru"
-
-chmod +x tohru.sh
-
-rm -rf "$ORDIR"
+chmod +x "$HOME/.tohru/tohru.sh"
+case "$1" in
+    "rm")mv "$ORDIR" /tmp/tohru_debris;;
+    "remove")mv "$ORDIR" /tmp/tohru_debris;;
+esac

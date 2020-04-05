@@ -1,0 +1,4 @@
+>add an auto updater
+>make the appearence friendlier, maybe move this out of the terminal?
+>make a it POSIX-Compliant or at least make a POSIX version
+>??

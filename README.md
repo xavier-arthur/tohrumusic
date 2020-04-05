@@ -7,4 +7,3 @@ ffmpeg to work properly
 
 ```bash
 sudo apt install ffmpeg
-```
