@@ -1,16 +1,26 @@
 #!/bin/bash
 
-function spinner() {
+function spinningBar() {
     tput civis -- invisible
-    printf "["
-    # While process is running...
-    while kill -0 $PID 2> /dev/null; do
-        printf  "▓"
-        sleep 1
+    itens=(\\ \| / -)
+    WRK='Working  '
+
+    echo -n "$WRK"
+    while kill -0 $PID 2> /dev/null
+    do
+        for i in "${itens[@]}"
+        do
+            printf "%s\b"$i
+            sleep 0.1
+        done
     done
-    printf "]"
-    echo "Done!"
-    tput cnorm -- normal
+
+    seq 1 ${#WRK} | while read i
+        do
+            echo -en "\b \b"
+        done
+
+    tput cnorm
 }
 
 cat << EOF
@@ -34,18 +44,16 @@ do
             read -p "Insert the directory name:" DIRNAM
             mkdir -p "$DIRNAM"
             cd "$DIRNAM"
-    fi
 
-    if [ "$CHOICE" = "y" ]; then
-        youtube-dl -i -x --audio-format mp3 --embed-thumbnail -o \
-        '%(playlist_index)s-%(title)s.%(ext)s' \
-        "$LINK" >> /dev/null & PID="$!"
+            youtube-dl -i -x --audio-format mp3 --embed-thumbnail -o \
+            '%(playlist_index)s-%(title)s.%(ext)s' \
+            "$LINK" >> /dev/null & PID="$!"
     else
         youtube-dl -i -x --audio-format mp3 --embed-thumbnail -o \
         '%(title)s.%(ext)s' "$LINK" >> /dev/null & PID="$!"
     fi
 
-    spinner
+    spinningBar ; echo -e "Done!"
 
     read -p "Press q to quit or any key to download more songs:" EXT
     [ "$EXT" = "q" ] && exit 0
