@@ -1,24 +1,20 @@
 #!/bin/bash
 
 function spinningBar() {
-    tput civis -- invisible
+    tput civis
     itens=(\\ \| / -)
-    WRK='Working  '
 
-    echo -n "$WRK"
-    while kill -0 $PID 2> /dev/null
+    printf "Working "
+    while kill -0 "$PID" 2> /dev/null
     do
         for i in "${itens[@]}"
         do
-            printf "%s\b"$i
+            printf "%s\b" "$i"
             sleep 0.1
         done
     done
 
-    seq 1 ${#WRK} | while read i
-        do
-            echo -en "\b \b"
-        done
+    printf " \n"
 
     tput cnorm
 }
@@ -35,25 +31,25 @@ EOF
 
 while true;
 do
-    cd "$HOME/TohruDownloads"
+    cd "$HOME/TohruDownloads" || exit 1
 
-    echo ; read -p "Insert the URL:" LINK
+    echo ; read -p "Insert the URL:" link
 
     read -p "do you want to download it into a directory? y/n:" CHOICE
     if [ "$CHOICE" = "y" ]; then
-            read -p "Insert the directory name:" DIRNAM
-            mkdir -p "$DIRNAM"
-            cd "$DIRNAM"
+            read -p "Insert the directory name:" dirnam
+            mkdir -p "$dirnam"
+            cd "$dirnam" || echo "quitting" || exit 1
 
-            youtube-dl -i -x --audio-format mp3 --embed-thumbnail -o \
+            youtube-dl -i -x --audio-format mp3 -o \
             '%(playlist_index)s-%(title)s.%(ext)s' \
-            "$LINK" >> /dev/null & PID="$!"
+            "$link" >> /dev/null & PID="$!"
     else
-        youtube-dl -i -x --audio-format mp3 --embed-thumbnail -o \
-        '%(title)s.%(ext)s' "$LINK" >> /dev/null & PID="$!"
+        youtube-dl -i -x --audio-format mp3 -o \
+        '%(title)s.%(ext)s' "$link" >> /dev/null & PID="$!"
     fi
 
-    spinningBar ; echo -e "Done!"
+    spinningBar ; printf "Done!\n"
 
     read -p "Press q to quit or any key to download more songs:" EXT
     [ "$EXT" = "q" ] && exit 0
